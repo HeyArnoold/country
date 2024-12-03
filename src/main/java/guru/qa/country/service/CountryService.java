@@ -1,5 +1,6 @@
 package guru.qa.country.service;
 
+import guru.qa.country.data.CountryEntity;
 import guru.qa.country.data.CountryRepository;
 import guru.qa.country.model.Country;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,23 @@ public class CountryService {
                 .stream()
                 .map(Country::fromEntity)
                 .toList();
+    }
+
+    public Country addCountry(Country country) {
+        CountryEntity entity = new CountryEntity();
+        entity.setCountryName(country.countryName());
+        entity.setCountryCode(country.countryCode());
+        entity = countryRepository.save(entity);
+        return Country.fromEntity(entity);
+    }
+
+    public Country updateCountryName(String countryCode, String countryName) {
+        CountryEntity entity = countryRepository.findByCountryCode(countryCode);
+        if (entity == null) {
+            throw new IllegalArgumentException("Country with code " + countryCode + " not found.");
+        }
+        entity.setCountryName(countryName);
+        entity = countryRepository.save(entity);
+        return Country.fromEntity(entity);
     }
 }
