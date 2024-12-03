@@ -10,6 +10,7 @@ public record Country(@JsonProperty("country_name")
                       @JsonProperty("country_code")
                       String countryCode,
                       Date independencyDate) {
+
     public static Country fromEntity(CountryEntity ce) {
         return new Country(
                 ce.getCountryName(),
